@@ -12,11 +12,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR-USERNAME/dsa-smart-assistant"
+    "url": "https://github.com/IshaKhatavkar17/dsa-smart-assistant"
   },
-  "homepage": "https://github.com/YOUR-USERNAME/dsa-smart-assistant#readme",
+  "homepage": "https://github.com/IshaKhatavkar17/dsa-smart-assistant#readme",
   "bugs": {
-    "url": "https://github.com/YOUR-USERNAME/dsa-smart-assistant/issues"
+    "url": "https://github.com/IshaKhatavkar17/dsa-smart-assistant/issues"
   },
   "engines": {
     "vscode": "^1.103.0"
