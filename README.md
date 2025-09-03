@@ -160,7 +160,7 @@ Want to contribute or modify the extension?
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR-USERNAME/dsa-smart-assistant.git
+git clone https://github.com/IshaKhatavkar17/dsa-smart-assistant.git
 cd dsa-smart-assistant
 
 # Install dependencies
@@ -194,7 +194,14 @@ npm run publish
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
+Want to add your favorite algorithm? Fork → Code → PR 🚀
+Some ideas:
+
+Add new templates (Merge Sort, Heap Sort, etc.)
+
+Improve regex-based pattern detection
+
+Extend support to more languages
 
 ### Add New Algorithm Templates
 1. Edit `src/extension.ts`
@@ -245,8 +252,8 @@ this.templates.set('merge-sort', {
 
 Found a bug or have an idea? We'd love to hear from you!
 
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/YOUR-USERNAME/dsa-smart-assistant/issues)
-- **💡 Feature Requests**: [GitHub Discussions](https://github.com/YOUR-USERNAME/dsa-smart-assistant/discussions)
+- **🐛 Bug Reports**: [GitHub Issues](https://github.com/IshaKhatavkar17/dsa-smart-assistant/issues)
+- **💡 Feature Requests**: [GitHub Discussions](https://github.com/IshaKhatavkar17/dsa-smart-assistant/discussions)
 - **💬 Community**: [Discord Server](https://discord.gg/dsa-assistant)
 
 ## 📄 License
@@ -261,7 +268,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🌟 Show Your Support
 
-If this extension helps you learn DSA faster:
+If this extension makes your DSA prep easier:
 - ⭐ **Star** the repository on GitHub
 - 📝 **Review** the extension on VS Code Marketplace  
 - 🐦 **Share** with your developer friends
@@ -271,4 +278,4 @@ If this extension helps you learn DSA faster:
 
 **Happy Coding! 🚀**
 
-*Made with ❤️ for the developer community*
+*Made with ❤️ By Isha Khatavkar*
