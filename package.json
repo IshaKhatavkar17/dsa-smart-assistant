@@ -1,0 +1,189 @@
+{
+  "name": "dsa-smart-assistant",
+  "displayName": "DSA Smart Assistant",
+  "description": "AI-powered DSA algorithm suggestions with instant blur code templates that accelerate learning",
+  "version": "1.0.0",
+  "icon": "media/icon.png",
+  "publisher": "Isha Khatavkar",
+  "author": {
+    "name": "Isha Khatavkar",
+    "email": "ishakhatavkar05@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR-USERNAME/dsa-smart-assistant"
+  },
+  "homepage": "https://github.com/YOUR-USERNAME/dsa-smart-assistant#readme",
+  "bugs": {
+    "url": "https://github.com/YOUR-USERNAME/dsa-smart-assistant/issues"
+  },
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": [
+    "Education",
+    "Snippets", 
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "dsa",
+    "algorithms",
+    "data structures",
+    "learning",
+    "ai",
+    "autocomplete", 
+    "templates",
+    "coding interview",
+    "leetcode",
+    "programming",
+    "blur code",
+    "smart suggestions"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onLanguage:java",
+    "onLanguage:python", 
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:cpp",
+    "onLanguage:c"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dsaAssistant.showSuggestions",
+        "title": "Show DSA Algorithm Suggestions",
+        "category": "DSA Assistant",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "dsaAssistant.insertTemplate", 
+        "title": "Insert Algorithm Template",
+        "category": "DSA Assistant",
+        "icon": "$(add)"
+      },
+      {
+        "command": "dsaAssistant.showAllTemplates",
+        "title": "Browse All DSA Templates",
+        "category": "DSA Assistant", 
+        "icon": "$(library)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "dsaAssistant.showSuggestions",
+          "when": "editorHasSelection && resourceExtname in .java .py .js .ts .cpp .c",
+          "group": "DSA@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "dsaAssistant.showSuggestions",
+          "when": "editorIsOpen"
+        },
+        {
+          "command": "dsaAssistant.showAllTemplates", 
+          "when": "editorIsOpen"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "dsaAssistant.showSuggestions",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "dsaAssistant.showAllTemplates",
+        "key": "ctrl+alt+shift+d", 
+        "mac": "cmd+alt+shift+d",
+        "when": "editorTextFocus"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "dsaSuggestions",
+          "name": "DSA Suggestions",
+          "when": "resourceExtname == .java || resourceExtname == .py || resourceExtname == .js || resourceExtname == .ts || resourceExtname == .cpp || resourceExtname == .c"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "DSA Smart Assistant",
+      "properties": {
+        "dsaAssistant.enableAutoSuggestions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic DSA pattern detection while typing"
+        },
+        "dsaAssistant.showBlurOverlay": {
+          "type": "boolean",
+          "default": true, 
+          "description": "Show blurred algorithm templates as overlay in editor"
+        },
+        "dsaAssistant.autoShowSuggestions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically show suggestion popup when patterns are detected"
+        },
+        "dsaAssistant.suggestionDelay": {
+          "type": "number",
+          "default": 500,
+          "minimum": 100,
+          "maximum": 2000,
+          "description": "Delay before analyzing code for patterns (milliseconds)"
+        },
+        "dsaAssistant.patternSensitivity": {
+          "type": "string",
+          "default": "medium",
+          "enum": ["low", "medium", "high"],
+          "description": "How sensitive the pattern detection should be"
+        },
+        "dsaAssistant.enableStatusBar": {
+          "type": "boolean", 
+          "default": true,
+          "description": "Show DSA pattern detection status in status bar"
+        }
+      }
+    }
+  },
+  "scripts": {
+  "vscode:prepublish": "npm run package",
+  "compile": "webpack",
+  "watch": "webpack --watch",
+  "package": "webpack --mode production --devtool hidden-source-map",
+  "compile-tests": "tsc -p . --outDir out",
+  "watch-tests": "tsc -p . -w --outDir out",
+  "pretest": "npm run compile-tests && npm run compile && npm run lint",
+  "lint": "eslint src",
+  "test": "vscode-test",
+  "publish": "vsce publish",
+  "clean": "rimraf dist"
+},
+"devDependencies": {
+  "@types/vscode": "^1.103.0",
+  "@types/mocha": "^10.0.10",
+  "@types/node": "22.x",
+  "@typescript-eslint/eslint-plugin": "^8.39.0",
+  "@typescript-eslint/parser": "^8.39.0",
+  "eslint": "^9.32.0",
+  "typescript": "^5.9.2",
+  "ts-loader": "^9.5.2",
+  "webpack": "^5.101.0",
+  "webpack-cli": "^6.0.1",
+  "@vscode/test-cli": "^0.0.11",
+  "@vscode/test-electron": "^2.5.2",
+  "vsce": "^2.15.0",
+  "rimraf": "^5.0.5"
+},
+"dependencies": {}
+}
