@@ -1,16 +1,20 @@
 {
-	"compilerOptions": {
-		"module": "Node16",
-		"target": "ES2022",
-		"lib": [
-			"ES2022"
-		],
-		"sourceMap": true,
-		"rootDir": "src",
-		"strict": true,   /* enable all strict type-checking options */
-		/* Additional Checks */
-		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
-	}
+  "compilerOptions": {
+    "module": "Node16",                       // Better for modern Node.js
+    "target": "ES2022",                       // Latest features
+    "outDir": "out",                          // Compiled JS output
+    "lib": [
+      "ES2022"
+    ],
+    "sourceMap": true,
+    "rootDir": "src",
+    "strict": true,                           // Enable strict mode
+    "esModuleInterop": true,                  // Allow default imports
+    "skipLibCheck": true,                     // Faster build, ignore type-checking of libs
+    "forceConsistentCasingInFileNames": true  // Prevents casing mismatches
+  },
+  "exclude": [
+    "node_modules",
+    ".vscode-test"
+  ]
 }
