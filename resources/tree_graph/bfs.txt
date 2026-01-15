@@ -1,0 +1,48 @@
+KEY: BFS
+CATEGORY: Tree and Graph
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(V+E)
+SPACE_COMPLEXITY: O(V)
+
+DESCRIPTION:
+Breadth-First Search explores graph level by level using a Queue.
+Finds shortest paths in unweighted graphs and explores all neighbors before deeper nodes.
+
+WHEN_TO_USE:
+- Shortest path in unweighted graphs
+- Level-order traversal
+- Connected components
+- Bipartite graphs
+- Word ladder problems
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static void bfs(int[][] graph, int start) {
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[graph.length];
+        
+        queue.add(start);
+        visited[start] = true;
+        
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.println(node);
+            
+            for (int neighbor : graph[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Binary Tree Level Order Traversal
+- Shortest Path in Binary Matrix
+- Network Delay Time
+- Walls and Gates
+- Number of Islands

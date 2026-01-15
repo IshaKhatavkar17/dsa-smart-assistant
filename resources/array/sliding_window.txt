@@ -1,0 +1,43 @@
+KEY: SLIDING_WINDOW
+CATEGORY: Array Manipulation
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(k)
+
+DESCRIPTION:
+Sliding Window maintains a dynamic window of elements that satisfy a condition.
+Expand the window to include more elements and contract when the condition is violated.
+
+WHEN_TO_USE:
+- Longest/shortest substring/subarray
+- Substring matching problems
+- Window-based aggregations
+- Maximum sum subarray of size k
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int slidingWindow(int[] arr, int k) {
+        int left = 0, maxSum = 0, currentSum = 0;
+        
+        for (int right = 0; right < arr.length; right++) {
+            currentSum += arr[right];
+            
+            while (right - left + 1 > k) {
+                currentSum -= arr[left];
+                left++;
+            }
+            
+            maxSum = Math.max(maxSum, currentSum);
+        }
+        return maxSum;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Longest Substring Without Repeating Characters
+- Minimum Window Substring
+- Maximum Average Subarray
+- Fruit Into Baskets
+- Subarray Product Less Than K

@@ -1,0 +1,55 @@
+KEY: BITWISE_XOR
+CATEGORY: Math & Bitwise
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+DESCRIPTION:
+Bitwise XOR operations solve problems involving duplicate detection, missing numbers,
+and single element identification. Key property: a ^ a = 0, a ^ 0 = a.
+
+WHEN_TO_USE:
+- Find single number (duplicates present)
+- Swap without temp variable
+- Detect odd parity
+- Find disappeared number
+- Bitwise difference operations
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    // Find single number in array where others appear twice
+    public static int singleNumber(int[] nums) {
+        int result = 0;
+        for (int num : nums) {
+            result ^= num;
+        }
+        return result;
+    }
+    
+    // Find two single numbers
+    public static int[] singleNumber2(int[] nums) {
+        int xor = 0;
+        for (int num : nums) xor ^= num;
+        
+        int mask = xor & (-xor); // rightmost set bit
+        int result1 = 0, result2 = 0;
+        
+        for (int num : nums) {
+            if ((num & mask) == 0) {
+                result1 ^= num;
+            } else {
+                result2 ^= num;
+            }
+        }
+        return new int[]{result1, result2};
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Single Number I, II, III
+- Missing Number
+- Find the Difference
+- Hamming Distance
+- Binary Number in Linked List

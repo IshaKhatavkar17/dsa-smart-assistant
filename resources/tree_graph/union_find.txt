@@ -1,0 +1,58 @@
+KEY: UNION_FIND
+CATEGORY: Tree and Graph
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(α(n)) amortized
+SPACE_COMPLEXITY: O(n)
+
+DESCRIPTION:
+Union-Find (Disjoint Set Union) efficiently handles dynamic connectivity and
+component queries using path compression and union by rank optimizations.
+
+WHEN_TO_USE:
+- Connected components
+- Cycle detection in undirected graphs
+- Minimum spanning tree (Kruskal's)
+- Equivalence classes
+- Graph connectivity queries
+
+JAVA_TEMPLATE:
+```java
+class UnionFind {
+    int[] parent, rank;
+    
+    public UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) parent[i] = i;
+    }
+    
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // path compression
+        }
+        return parent[x];
+    }
+    
+    public boolean union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return false;
+        
+        if (rank[px] < rank[py]) {
+            parent[px] = py;
+        } else if (rank[px] > rank[py]) {
+            parent[py] = px;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+        return true;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Redundant Connection
+- Number of Connected Components
+- Most Stones Removed
+- Accounts Merge
+- Minimum Cost to Connect All Points

@@ -1,0 +1,58 @@
+KEY: TOPOLOGICAL_SORT
+CATEGORY: Tree and Graph
+DIFFICULTY: Hard
+TIME_COMPLEXITY: O(V+E)
+SPACE_COMPLEXITY: O(V)
+
+DESCRIPTION:
+Topological Sort orders nodes in a DAG such that for every directed edge (u,v),
+u comes before v in the ordering. Uses DFS or Kahn's algorithm.
+
+WHEN_TO_USE:
+- Task scheduling with dependencies
+- Course prerequisites
+- Build systems
+- Alien dictionary
+- Compile order determination
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static List<Integer> topologicalSort(int n, int[][] edges) {
+        List<Integer>[] graph = new List[n];
+        int[] inDegree = new int[n];
+        
+        for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
+        
+        for (int[] edge : edges) {
+            graph[edge[0]].add(edge[1]);
+            inDegree[edge[1]]++;
+        }
+        
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (inDegree[i] == 0) queue.add(i);
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            result.add(node);
+            
+            for (int neighbor : graph[node]) {
+                if (--inDegree[neighbor] == 0) {
+                    queue.add(neighbor);
+                }
+            }
+        }
+        return result.size() == n ? result : new ArrayList<>();
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Course Schedule I & II
+- Alien Dictionary
+- Sequence Reconstruction
+- Minimum Height Trees
+- Safe State Graph

@@ -1,0 +1,63 @@
+KEY: FLOYD_WARSHALL_ALGORITHM
+ALIASES: All Pairs Shortest Path, APSP, Dynamic Programming Shortest Path
+CATEGORY: Graph Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find shortest paths between all pairs of nodes"
+- "Graph might have negative weights"
+- "Detect negative cycles"
+- Small graph (V <= 500, O(V^3) acceptable)
+
+INTUITION:
+Dynamic programming: dp[i][j] = shortest path from i to j.
+Build up solution by considering intermediate nodes k.
+If path i->k->j is shorter than i->j, update it.
+Try all possible intermediate nodes.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int[][] floydWarshall(int[][] graph) {
+        int n = graph.length;
+        int[][] dist = new int[n][n];
+        
+        // Initialize distances
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                dist[i][j] = graph[i][j];
+            }
+        }
+        
+        // Try all intermediate nodes
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (dist[i][k] != Integer.MAX_VALUE && 
+                        dist[k][j] != Integer.MAX_VALUE) {
+                        dist[i][j] = Math.min(dist[i][j], 
+                                             dist[i][k] + dist[k][j]);
+                    }
+                }
+            }
+        }
+        
+        // Check for negative cycles
+        for (int i = 0; i < n; i++) {
+            if (dist[i][i] < 0) return null; // Negative cycle
+        }
+        
+        return dist;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(V^3)
+SPACE_COMPLEXITY: O(V^2)
+
+COMMON_MISTAKES:
+- Wrong order of k, i, j loops (k must be outermost)
+- Not handling infinity values properly
+- Updating dist[i][i] to negative values
+- Using Integer.MAX_VALUE causing overflow
+- Not initializing from input graph correctly

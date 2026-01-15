@@ -1,0 +1,51 @@
+KEY: BACKTRACKING
+CATEGORY: Search & Optimization
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(N^N) worst case
+SPACE_COMPLEXITY: O(N) recursion depth
+
+DESCRIPTION:
+Backtracking systematically explores all possible solutions by building candidates
+incrementally and abandoning branches that cannot produce valid solutions.
+
+WHEN_TO_USE:
+- Permutations / combinations
+- Sudoku / N-Queens
+- Word search
+- Maze solving
+- Partition problems
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(nums, new ArrayList<>(), result, new boolean[nums.length]);
+        return result;
+    }
+    
+    private void backtrack(int[] nums, List<Integer> curr, 
+                          List<List<Integer>> result, boolean[] used) {
+        if (curr.size() == nums.length) {
+            result.add(new ArrayList<>(curr));
+            return;
+        }
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) continue;
+            curr.add(nums[i]);
+            used[i] = true;
+            backtrack(nums, curr, result, used);
+            curr.remove(curr.size() - 1);
+            used[i] = false;
+        }
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Permutations / Combinations
+- N-Queens
+- Sudoku Solver
+- Word Search
+- Generate Parentheses

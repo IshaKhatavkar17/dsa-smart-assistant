@@ -1,0 +1,40 @@
+KEY: TWO_POINTERS
+CATEGORY: Array Manipulation
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+DESCRIPTION:
+Two pointers technique uses two indices (left and right) moving towards each other
+or in the same direction to solve problems efficiently without extra space.
+
+WHEN_TO_USE:
+- Sorted arrays / linked lists
+- Remove duplicates / find pairs
+- Reverse / rotate operations
+- Partition / rearrange problems
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static void twoPointers(int[] arr) {
+        int left = 0, right = arr.length - 1;
+        
+        while (left < right) {
+            if (condition) {
+                // Process pair at left and right
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Container With Most Water
+- Trapping Rain Water
+- 3Sum
+- Remove Duplicates from Sorted Array
+- Reverse String

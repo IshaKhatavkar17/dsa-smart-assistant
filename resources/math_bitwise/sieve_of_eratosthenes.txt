@@ -1,0 +1,53 @@
+KEY: SIEVE_OF_ERATOSTHENES
+CATEGORY: Math & Bitwise
+DIFFICULTY: Easy
+TIME_COMPLEXITY: O(n log log n)
+SPACE_COMPLEXITY: O(n)
+
+DESCRIPTION:
+Sieve of Eratosthenes efficiently finds all primes up to n by iteratively
+marking multiples of each prime as composite.
+
+WHEN_TO_USE:
+- Prime number generation
+- Count primes in range
+- Prime factorization
+- Goldbach's conjecture
+- Prime gaps analysis
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static boolean[] sieveOfEratosthenes(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        for (int i = 2; i <= n; i++) {
+            isPrime[i] = true;
+        }
+        
+        for (int i = 2; i * i <= n; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= n; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+        return isPrime;
+    }
+    
+    public static int countPrimes(int n) {
+        boolean[] isPrime = sieveOfEratosthenes(n - 1);
+        int count = 0;
+        for (boolean prime : isPrime) {
+            if (prime) count++;
+        }
+        return count;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Count Primes
+- Prime Number of Set Bits
+- Powerful Integers
+- Prime Palindrome
+- Distinct Prime Factors

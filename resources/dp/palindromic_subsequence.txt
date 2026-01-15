@@ -1,0 +1,46 @@
+KEY: PALINDROMIC_SUBSEQUENCE
+CATEGORY: Dynamic Programming
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n^2)
+SPACE_COMPLEXITY: O(n^2)
+
+DESCRIPTION:
+Palindromic Subsequence problems find longest palindromic subsequences or count them.
+Uses DP with reverse string or expand-around-center approach.
+
+WHEN_TO_USE:
+- Longest palindromic subsequence
+- Palindrome partitioning
+- Minimum deletions to make palindrome
+- Longest repeating subsequence
+- Count palindromic substrings
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int longestPalindromicSubsequence(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        
+        for (int len = 1; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+                if (i == j) {
+                    dp[i][j] = 1;
+                } else if (s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Longest Palindromic Subsequence
+- Palindrome Partitioning I, II
+- Minimum Insertions to Make a Valid Parentheses String
+- Distinct Subsequences II

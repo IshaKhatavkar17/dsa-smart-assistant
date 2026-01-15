@@ -1,0 +1,55 @@
+KEY: TWO_HEAPS
+CATEGORY: Search & Optimization
+DIFFICULTY: Hard
+TIME_COMPLEXITY: O(log n) per operation
+SPACE_COMPLEXITY: O(n)
+
+DESCRIPTION:
+Two Heaps pattern uses a Max-Heap and Min-Heap to track two halves of data,
+enabling efficient median finding and balancing operations.
+
+WHEN_TO_USE:
+- Median of stream
+- Sliding window median
+- Continuous median
+- Balancing two sets
+- Online statistics
+
+JAVA_TEMPLATE:
+```java
+class MedianFinder {
+    PriorityQueue<Integer> maxHeap; // left half (max at top)
+    PriorityQueue<Integer> minHeap; // right half (min at top)
+    
+    public MedianFinder() {
+        maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        minHeap = new PriorityQueue<>();
+    }
+    
+    public void addNum(int num) {
+        if (maxHeap.isEmpty() || num <= maxHeap.peek()) {
+            maxHeap.offer(num);
+        } else {
+            minHeap.offer(num);
+        }
+        
+        if (maxHeap.size() > minHeap.size() + 1) {
+            minHeap.offer(maxHeap.poll());
+        } else if (minHeap.size() > maxHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if (maxHeap.size() == minHeap.size()) {
+            return (maxHeap.peek() + minHeap.peek()) / 2.0;
+        }
+        return maxHeap.peek();
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Find Median from Data Stream
+- Sliding Window Median
+- IPO (scheduling with capital)

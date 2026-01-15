@@ -1,0 +1,46 @@
+KEY: CYCLIC_SORT
+CATEGORY: Array Manipulation
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+DESCRIPTION:
+Cyclic Sort is used to solve problems involving arrays with numbers in a specific range.
+It places each number in its correct position: num at index (num - 1).
+
+WHEN_TO_USE:
+- Arrays with numbers from 1 to n
+- Missing number problems
+- Finding duplicates
+- First missing positive
+- Array of consecutive numbers
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static void cyclicSort(int[] arr) {
+        int i = 0;
+        while (i < arr.length) {
+            int correctIndex = arr[i] - 1;
+            if (arr[i] != arr[correctIndex]) {
+                swap(arr, i, correctIndex);
+            } else {
+                i++;
+            }
+        }
+    }
+    
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Missing Number
+- Find All Missing Numbers
+- Find the Duplicate Number
+- First Missing Positive
+- Set Mismatch

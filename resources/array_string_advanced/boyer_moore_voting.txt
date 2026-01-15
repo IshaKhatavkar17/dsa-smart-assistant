@@ -1,0 +1,80 @@
+KEY: BOYER_MOORE_VOTING
+ALIASES: Majority Element, Cancellation, Voting Algorithm
+CATEGORY: Array String Advanced
+DIFFICULTY: Medium
+
+WHEN_TO_USE:
+- "Find element appearing more than n/2 times"
+- "Find k elements appearing more than n/k times"
+- "Single pass with O(1) space required"
+- Majority element guaranteed to exist
+
+INTUITION:
+Think of "canceling out": pair each majority element with a different element.
+Since majority appears > n/2 times, it survives cancellation.
+Keep a count and a candidate. When count reaches 0, pick new candidate.
+The survivor is the majority.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+        int count = 0;
+        int candidate = 0;
+        
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+            count += (num == candidate) ? 1 : -1;
+        }
+        
+        return candidate;
+    }
+    
+    // For finding all elements appearing > n/3 times
+    public List<Integer> majorityElementII(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        int count1 = 0, count2 = 0;
+        int candidate1 = 0, candidate2 = 0;
+        
+        for (int num : nums) {
+            if (candidate1 == num) {
+                count1++;
+            } else if (candidate2 == num) {
+                count2++;
+            } else if (count1 == 0) {
+                candidate1 = num;
+                count1 = 1;
+            } else if (count2 == 0) {
+                candidate2 = num;
+                count2 = 1;
+            } else {
+                count1--;
+                count2--;
+            }
+        }
+        
+        count1 = count2 = 0;
+        for (int num : nums) {
+            if (num == candidate1) count1++;
+            else if (num == candidate2) count2++;
+        }
+        
+        if (count1 > nums.length / 3) result.add(candidate1);
+        if (count2 > nums.length / 3) result.add(candidate2);
+        
+        return result;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+COMMON_MISTAKES:
+- Not verifying candidate is actually majority
+- Wrong count update condition
+- Starting with count = 1 instead of 0
+- Not handling edge case of empty array
+- Confusion with n/3 vs n/2 threshold

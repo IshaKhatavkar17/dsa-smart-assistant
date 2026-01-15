@@ -1,0 +1,77 @@
+KEY: FENWICK_TREE
+ALIASES: Binary Indexed Tree, BIT, Cumulative Frequency, Prefix Sum Tree
+CATEGORY: Range Query Data Structure
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Prefix sum with point updates"
+- "More space-efficient than Segment Tree"
+- "Range sum queries with updates"
+- "Simpler implementation preferred"
+
+INTUITION:
+Use bit manipulation to efficiently index parent nodes.
+Each node stores sum of specific range determined by its index.
+Index i's parent is i + (i & -i) = i + lowest set bit.
+Parent's range is union of children's ranges, enabling O(log n) updates/queries.
+
+JAVA_TEMPLATE:
+```java
+class FenwickTree {
+    private int[] tree;
+    private int n;
+    
+    public FenwickTree(int n) {
+        this.n = n;
+        this.tree = new int[n + 1];
+    }
+    
+    public FenwickTree(int[] arr) {
+        this.n = arr.length;
+        this.tree = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            update(i, arr[i]);
+        }
+    }
+    
+    public void update(int index, int value) {
+        index++; // Convert to 1-indexed
+        while (index <= n) {
+            tree[index] += value;
+            index += index & (-index); // Add lowest set bit
+        }
+    }
+    
+    public int query(int index) {
+        index++; // Convert to 1-indexed
+        int sum = 0;
+        while (index > 0) {
+            sum += tree[index];
+            index -= index & (-index); // Remove lowest set bit
+        }
+        return sum;
+    }
+    
+    public int rangeQuery(int l, int r) {
+        if (l == 0) return query(r);
+        return query(r) - query(l - 1);
+    }
+    
+    public void updateRange(int l, int r, int value) {
+        update(l, value);
+        if (r + 1 < n) {
+            update(r + 1, -value);
+        }
+    }
+}
+```
+
+TIME_COMPLEXITY: O(log n) per operation
+SPACE_COMPLEXITY: O(n)
+
+COMMON_MISTAKES:
+- Forgetting 1-indexing of BIT
+- Wrong bit operation: (i & -i) vs (i & i)
+- Parent/child calculation (add vs remove bit)
+- Range query without base case
+- Update with accumulated value instead of delta

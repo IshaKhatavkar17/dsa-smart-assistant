@@ -1,0 +1,89 @@
+KEY: PRIM_KRUSKAL_MST
+ALIASES: Minimum Spanning Tree, MST, Greedy Graph, Union Find
+CATEGORY: Graph Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find minimum spanning tree of weighted graph"
+- "Connect all nodes with minimum total weight"
+- Prim: dense graphs, Kruskal: sparse graphs
+- "No cycles allowed"
+
+INTUITION:
+PRIM: Start from a node, greedily add cheapest edge connecting tree to outside.
+KRUSKAL: Sort edges by weight, add if it doesn't create cycle (Union-Find).
+Both produce MST with V-1 edges.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    // Kruskal's Algorithm with Union-Find
+    static class Edge implements Comparable<Edge> {
+        int u, v, weight;
+        public int compareTo(Edge other) {
+            return this.weight - other.weight;
+        }
+    }
+    
+    public int kruskalMST(int n, Edge[] edges) {
+        Arrays.sort(edges);
+        UnionFind uf = new UnionFind(n);
+        int mstWeight = 0;
+        int edgesAdded = 0;
+        
+        for (Edge edge : edges) {
+            if (uf.find(edge.u) != uf.find(edge.v)) {
+                uf.union(edge.u, edge.v);
+                mstWeight += edge.weight;
+                edgesAdded++;
+                if (edgesAdded == n - 1) break;
+            }
+        }
+        
+        return mstWeight;
+    }
+    
+    // Prim's Algorithm
+    public int primMST(int[][] graph) {
+        int n = graph.length;
+        boolean[] visited = new boolean[n];
+        int mstWeight = 0;
+        visited[0] = true;
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        
+        for (int j = 1; j < n; j++) {
+            if (graph[0][j] != 0) {
+                pq.offer(new int[]{graph[0][j], 0, j});
+            }
+        }
+        
+        while (!pq.isEmpty()) {
+            int[] edge = pq.poll();
+            int weight = edge[0], u = edge[1], v = edge[2];
+            
+            if (visited[v]) continue;
+            visited[v] = true;
+            mstWeight += weight;
+            
+            for (int next = 0; next < n; next++) {
+                if (!visited[next] && graph[v][next] != 0) {
+                    pq.offer(new int[]{graph[v][next], v, next});
+                }
+            }
+        }
+        
+        return mstWeight;
+    }
+}
+```
+
+TIME_COMPLEXITY: Kruskal O(E log E), Prim O((V+E) log V)
+SPACE_COMPLEXITY: O(V + E)
+
+COMMON_MISTAKES:
+- Kruskal: Creating cycle detection bug in Union-Find
+- Prim: Revisiting nodes already in tree
+- Not sorting edges in Kruskal
+- Counting wrong number of edges (should be V-1)
+- Integer overflow with weight sum

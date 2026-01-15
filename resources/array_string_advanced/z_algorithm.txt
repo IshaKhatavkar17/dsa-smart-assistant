@@ -1,0 +1,64 @@
+KEY: Z_ALGORITHM
+ALIASES: Z-Array, String Matching, Pattern Finding
+CATEGORY: Array String Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find all occurrences of pattern in string"
+- "Build Z-array for repeating substrings"
+- "Faster than KMP for some cases"
+- Problem requires all pattern matches
+
+INTUITION:
+Z-array[i] = length of substring starting at i that matches prefix of string.
+Maintain a "Z-box" [L, R] of rightmost known match.
+Use symmetry: if position i is inside the Z-box, it matches a prefix.
+Extend known matches using this mirror property.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int[] buildZArray(String s) {
+        int n = s.length();
+        int[] z = new int[n];
+        int l = 0, r = 0;
+        
+        for (int i = 1; i < n; i++) {
+            if (i <= r) {
+                z[i] = Math.min(r - i + 1, z[i - l]);
+            }
+            while (i + z[i] < n && s.charAt(z[i]) == s.charAt(i + z[i])) {
+                z[i]++;
+            }
+            if (i + z[i] - 1 > r) {
+                l = i;
+                r = i + z[i] - 1;
+            }
+        }
+        return z;
+    }
+    
+    public List<Integer> findAllOccurrences(String text, String pattern) {
+        String combined = pattern + "$" + text;
+        int[] z = buildZArray(combined);
+        List<Integer> result = new ArrayList<>();
+        
+        for (int i = 0; i < z.length; i++) {
+            if (z[i] == pattern.length()) {
+                result.add(i - pattern.length() - 1);
+            }
+        }
+        return result;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n + m)
+SPACE_COMPLEXITY: O(n + m)
+
+COMMON_MISTAKES:
+- Wrong Z-box update logic
+- Not using mirror property optimization
+- Off-by-one in Z-box boundaries
+- Confusing Z-array indices
+- Not resetting after extending match

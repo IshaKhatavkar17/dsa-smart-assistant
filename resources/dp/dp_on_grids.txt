@@ -1,0 +1,47 @@
+KEY: DP_ON_GRIDS
+CATEGORY: Dynamic Programming
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(m*n)
+SPACE_COMPLEXITY: O(m*n)
+
+DESCRIPTION:
+DP on Grids solves 2D path and matrix problems using 2D DP tables.
+Tracks optimal values while traversing grid with constraints.
+
+WHEN_TO_USE:
+- Path sum problems
+- Unique paths with obstacles
+- Minimum path cost
+- Maximum diamond collection
+- Grid traversal optimization
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int uniquePathsWithObstacles(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] dp = new int[m][n];
+        
+        if (grid[0][0] == 1) return 0;
+        dp[0][0] = 1;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    dp[i][j] = 0;
+                } else if (i > 0 || j > 0) {
+                    dp[i][j] = (i > 0 ? dp[i - 1][j] : 0) + (j > 0 ? dp[i][j - 1] : 0);
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Unique Paths
+- Unique Paths II (with obstacles)
+- Minimum Path Sum
+- Maximum Sum Rectangular Submatrix
+- Cherry Pickup

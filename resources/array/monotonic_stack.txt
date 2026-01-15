@@ -1,0 +1,42 @@
+KEY: MONOTONIC_STACK
+CATEGORY: Array Manipulation
+DIFFICULTY: Hard
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(n)
+
+DESCRIPTION:
+Monotonic Stack maintains elements in increasing or decreasing order.
+Used for finding next/previous greater/smaller elements efficiently.
+
+WHEN_TO_USE:
+- Next Greater Element
+- Previous Smaller Element
+- Largest Rectangle in Histogram
+- Trapping Rain Water
+- Daily Temperatures
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int[] nextGreaterElement(int[] arr) {
+        Stack<Integer> stack = new Stack<>();
+        int[] result = new int[arr.length];
+        
+        for (int i = arr.length - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && stack.peek() <= arr[i]) {
+                stack.pop();
+            }
+            result[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(arr[i]);
+        }
+        return result;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Next Greater Element I, II, III
+- Daily Temperatures
+- Largest Rectangle in Histogram
+- Trapping Rain Water
+- Remove K Digits

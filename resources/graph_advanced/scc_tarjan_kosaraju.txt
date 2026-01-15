@@ -1,0 +1,91 @@
+KEY: SCC_TARJAN_KOSARAJU
+ALIASES: Strongly Connected Components, SCC, Graph Condensation, Tarjan DFS
+CATEGORY: Graph Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find all strongly connected components"
+- "Condensation of directed graph"
+- "Two-pass DFS required"
+- Kosaraju simpler, Tarjan more elegant
+
+INTUITION:
+KOSARAJU: Find finishing times in original graph, then traverse in reverse graph by finishing order.
+TARJAN: Use DFS with low-link values tracking reachable SCCs, identify using stack.
+Think: grouping nodes that can reach each other.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public List<List<Integer>> kosaraju(int n, int[][] edges) {
+        List<List<Integer>> graph = new ArrayList<>();
+        List<List<Integer>> revGraph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+            revGraph.add(new ArrayList<>());
+        }
+        
+        for (int[] edge : edges) {
+            graph.get(edge[0]).add(edge[1]);
+            revGraph.get(edge[1]).add(edge[0]);
+        }
+        
+        boolean[] visited = new boolean[n];
+        Stack<Integer> stack = new Stack<>();
+        
+        // First DFS to find finishing order
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                dfs1(i, graph, visited, stack);
+            }
+        }
+        
+        // Second DFS on reversed graph
+        Arrays.fill(visited, false);
+        List<List<Integer>> sccs = new ArrayList<>();
+        
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            if (!visited[node]) {
+                List<Integer> scc = new ArrayList<>();
+                dfs2(node, revGraph, visited, scc);
+                sccs.add(scc);
+            }
+        }
+        
+        return sccs;
+    }
+    
+    private void dfs1(int node, List<List<Integer>> graph, 
+                      boolean[] visited, Stack<Integer> stack) {
+        visited[node] = true;
+        for (int next : graph.get(node)) {
+            if (!visited[next]) {
+                dfs1(next, graph, visited, stack);
+            }
+        }
+        stack.push(node);
+    }
+    
+    private void dfs2(int node, List<List<Integer>> graph, 
+                      boolean[] visited, List<Integer> scc) {
+        visited[node] = true;
+        scc.add(node);
+        for (int next : graph.get(node)) {
+            if (!visited[next]) {
+                dfs2(next, graph, visited, scc);
+            }
+        }
+    }
+}
+```
+
+TIME_COMPLEXITY: O(V + E)
+SPACE_COMPLEXITY: O(V + E)
+
+COMMON_MISTAKES:
+- Forgetting to reverse graph for second pass
+- Wrong finishing order retrieval
+- Not clearing visited array between passes
+- Stack ordering (LIFO) confusion
+- Mixing directions in graph traversal

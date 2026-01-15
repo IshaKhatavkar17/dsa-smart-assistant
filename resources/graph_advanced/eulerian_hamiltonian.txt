@@ -1,0 +1,104 @@
+KEY: EULERIAN_HAMILTONIAN_PATH
+ALIASES: Euler Path, Hamiltonian Cycle, Graph Traversal, Circuit
+CATEGORY: Graph Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Visit every edge exactly once" = Eulerian path
+- "Visit every node exactly once" = Hamiltonian path
+- Graph structure analysis required
+- Eulerian: O(V+E), Hamiltonian: NP-Hard
+
+INTUITION:
+EULERIAN: Each node must have even degree (for cycle) or exactly 2 odd degrees (for path).
+Use Hierholzer's algorithm: track edges, backtrack when stuck.
+HAMILTONIAN: Exponential problem, use backtracking or DP+bitmask for small graphs.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    // Eulerian Path using Hierholzer's algorithm
+    public List<Integer> eulerianPath(int n, int[][] edges) {
+        List<Integer>[] graph = new ArrayList[n];
+        int[] degree = new int[n];
+        
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        for (int[] edge : edges) {
+            graph[edge[0]].add(edge[1]);
+            degree[edge[0]]++;
+            degree[edge[1]]++;
+        }
+        
+        int start = 0;
+        for (int i = 0; i < n; i++) {
+            if (degree[i] % 2 == 1) {
+                start = i;
+                break;
+            }
+        }
+        
+        Stack<Integer> stack = new Stack<>();
+        List<Integer> path = new ArrayList<>();
+        stack.push(start);
+        
+        while (!stack.isEmpty()) {
+            int u = stack.peek();
+            if (graph[u].isEmpty()) {
+                path.add(stack.pop());
+            } else {
+                int v = graph[u].remove(graph[u].size() - 1);
+                stack.push(v);
+            }
+        }
+        
+        Collections.reverse(path);
+        return path;
+    }
+    
+    // Hamiltonian Path with backtracking (small graphs only)
+    public boolean hamiltonianPath(int n, int[][] edges) {
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        for (int[] edge : edges) {
+            graph[edge[0]].add(edge[1]);
+            graph[edge[1]].add(edge[0]);
+        }
+        
+        boolean[] visited = new boolean[n];
+        return backtrack(0, graph, visited, 1, n);
+    }
+    
+    private boolean backtrack(int node, List<Integer>[] graph, 
+                             boolean[] visited, int count, int n) {
+        if (count == n) return true;
+        
+        for (int next : graph[node]) {
+            if (!visited[next]) {
+                visited[next] = true;
+                if (backtrack(next, graph, visited, count + 1, n)) {
+                    return true;
+                }
+                visited[next] = false;
+            }
+        }
+        
+        return false;
+    }
+}
+```
+
+TIME_COMPLEXITY: Eulerian O(V+E), Hamiltonian O(2^V) worst case
+SPACE_COMPLEXITY: O(V + E)
+
+COMMON_MISTAKES:
+- Eulerian: Not checking degree conditions
+- Eulerian: Counting edges twice in undirected graphs
+- Hamiltonian: Using for large graphs (exponential)
+- Not reversing path from Hierholzer's algorithm
+- Confusing edge vs node visit requirements

@@ -1,0 +1,41 @@
+KEY: FAST_SLOW_POINTERS
+CATEGORY: Array Manipulation
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+DESCRIPTION:
+Fast and Slow pointers (tortoise and hare) technique uses two pointers moving
+at different speeds to detect cycles, find middle elements, or partition arrays.
+
+WHEN_TO_USE:
+- Cycle detection in linked lists
+- Finding middle of linked list
+- Partition problems
+- Remove Nth node from end
+- Palindrome linked lists
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static boolean detectCycle(ListNode head) {
+        if (head == null || head.next == null) return false;
+        
+        ListNode slow = head, fast = head.next;
+        
+        while (fast != null && fast.next != null) {
+            if (slow == fast) return true;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return false;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Linked List Cycle
+- Linked List Cycle II
+- Happy Number
+- Middle of the Linked List
+- Palindrome Linked List

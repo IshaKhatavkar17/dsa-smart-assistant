@@ -1,0 +1,93 @@
+KEY: BITMASKING_DYNAMIC_PROGRAMMING
+ALIASES: Bitmask DP, TSP with Bitmask, Subset DP, State Compression
+CATEGORY: Geometry Math
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Traveling Salesman Problem (TSP)"
+- "Select subset of items with constraints"
+- "Small state space (n <= 20)"
+- "Exponential solutions compressed with bitmask"
+
+INTUITION:
+Use integer bits to represent subset state.
+dp[mask][i] = best value reaching state 'mask' at position i.
+Iterate through submasks or add elements to grow the state.
+Exponential but compressed representation avoids array explosion.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    // TSP: Find shortest cycle visiting all cities
+    public int tsp(int[][] dist) {
+        int n = dist.length;
+        int maxMask = (1 << n) - 1;
+        int[][] dp = new int[maxMask + 1][n];
+        
+        // Initialize all to infinity
+        for (int i = 0; i <= maxMask; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        }
+        
+        // Start from city 0
+        dp[1][0] = 0;
+        
+        for (int mask = 1; mask <= maxMask; mask++) {
+            for (int u = 0; u < n; u++) {
+                if ((mask & (1 << u)) == 0) continue; // u not in mask
+                if (dp[mask][u] == Integer.MAX_VALUE) continue;
+                
+                for (int v = 0; v < n; v++) {
+                    if ((mask & (1 << v)) != 0) continue; // v already in mask
+                    
+                    int newMask = mask | (1 << v);
+                    dp[newMask][v] = Math.min(dp[newMask][v], 
+                                              dp[mask][u] + dist[u][v]);
+                }
+            }
+        }
+        
+        // Find minimum cycle back to start
+        int result = Integer.MAX_VALUE;
+        for (int u = 1; u < n; u++) {
+            result = Math.min(result, dp[maxMask][u] + dist[u][0]);
+        }
+        
+        return result;
+    }
+    
+    // Subset sum enumeration with bitmask
+    public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        int total = 0;
+        for (int num : nums) total += num;
+        
+        if (total % 2 == 1) return false;
+        
+        int target = total / 2;
+        int maxMask = (1 << n) - 1;
+        
+        for (int mask = 0; mask <= maxMask; mask++) {
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) != 0) {
+                    sum += nums[i];
+                }
+            }
+            if (sum == target) return true;
+        }
+        
+        return false;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(2^n * n^2) for TSP
+SPACE_COMPLEXITY: O(2^n * n)
+
+COMMON_MISTAKES:
+- Using mask for n > 20 (too slow)
+- Wrong bit operations (& vs |, bit position)
+- Not initializing base case correctly
+- Integer overflow with 2^n
+- Confusing submask iteration vs supermask

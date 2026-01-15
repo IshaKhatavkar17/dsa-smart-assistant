@@ -1,0 +1,59 @@
+KEY: DFS
+CATEGORY: Tree and Graph
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(V+E)
+SPACE_COMPLEXITY: O(V)
+
+DESCRIPTION:
+Depth-First Search explores graph deeply using recursion or Stack.
+Useful for path finding, detecting cycles, and topological sorting.
+
+WHEN_TO_USE:
+- Connected components
+- Path existence
+- Cycle detection
+- Topological sort
+- Permutations / combinations
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static void dfs(int[][] graph, int node, boolean[] visited) {
+        visited[node] = true;
+        System.out.println(node);
+        
+        for (int neighbor : graph[node]) {
+            if (!visited[neighbor]) {
+                dfs(graph, neighbor, visited);
+            }
+        }
+    }
+    
+    public static void dfsIterative(int[][] graph, int start) {
+        Stack<Integer> stack = new Stack<>();
+        boolean[] visited = new boolean[graph.length];
+        
+        stack.push(start);
+        visited[start] = true;
+        
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            System.out.println(node);
+            
+            for (int neighbor : graph[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    stack.push(neighbor);
+                }
+            }
+        }
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Number of Islands
+- Clone Graph
+- Pacific Atlantic Water Flow
+- Course Schedule (cycle detection)
+- All Paths from Root to Leaf

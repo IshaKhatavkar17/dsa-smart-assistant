@@ -1,0 +1,53 @@
+KEY: FIBONACCI
+CATEGORY: Dynamic Programming
+DIFFICULTY: Easy
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+DESCRIPTION:
+Fibonacci DP foundation for recursive problems with overlapping subproblems.
+Can be solved bottom-up iteratively or top-down with memoization.
+
+WHEN_TO_USE:
+- Optimal substructure problems
+- Climbing stairs variants
+- Robot paths
+- House robber problems
+- Number of ways to do something
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int fibonacci(int n) {
+        if (n <= 1) return n;
+        
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+    
+    // Space optimized
+    public static int fibOptimized(int n) {
+        if (n <= 1) return n;
+        int prev1 = 0, prev2 = 1;
+        for (int i = 2; i <= n; i++) {
+            int curr = prev1 + prev2;
+            prev1 = prev2;
+            prev2 = curr;
+        }
+        return prev2;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Fibonacci Number
+- Climbing Stairs
+- Min Cost Climbing Stairs
+- House Robber
+- Decode Ways

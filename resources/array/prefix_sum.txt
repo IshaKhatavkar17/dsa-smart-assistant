@@ -1,0 +1,40 @@
+KEY: PREFIX_SUM
+CATEGORY: Array Manipulation
+DIFFICULTY: Easy
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(n)
+
+DESCRIPTION:
+Prefix Sum precomputes cumulative sums from the start of an array to enable
+O(1) range sum queries. Useful for subarray problems and range queries.
+
+WHEN_TO_USE:
+- Range sum queries
+- Subarray sum equals target
+- Contiguous subarray sum
+- Maximum subarray sum
+- Range product queries
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int[] computePrefixSum(int[] arr) {
+        int[] prefix = new int[arr.length + 1];
+        for (int i = 0; i < arr.length; i++) {
+            prefix[i + 1] = prefix[i] + arr[i];
+        }
+        return prefix;
+    }
+    
+    public int getRangeSum(int[] prefix, int left, int right) {
+        return prefix[right + 1] - prefix[left];
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Subarray Sum Equals K
+- Range Sum Query
+- Maximum Subarray
+- Contiguous Array
+- Product of Array Except Self

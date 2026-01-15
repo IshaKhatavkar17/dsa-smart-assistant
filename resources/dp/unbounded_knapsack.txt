@@ -1,0 +1,41 @@
+KEY: UNBOUNDED_KNAPSACK
+CATEGORY: Dynamic Programming
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n*w)
+SPACE_COMPLEXITY: O(w)
+
+DESCRIPTION:
+Unbounded Knapsack allows taking unlimited copies of each item.
+Optimal substructure: dp[w] = max(dp[w], value[i] + dp[w - weight[i]]) for all i.
+
+WHEN_TO_USE:
+- Unlimited items with constraints
+- Coin change problems
+- Minimum cost problems
+- Buying items multiple times
+- Cutting rod problems
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int unboundedKnapsack(int[] weights, int[] values, int capacity) {
+        int[] dp = new int[capacity + 1];
+        
+        for (int w = 1; w <= capacity; w++) {
+            for (int i = 0; i < weights.length; i++) {
+                if (weights[i] <= w) {
+                    dp[w] = Math.max(dp[w], values[i] + dp[w - weights[i]]);
+                }
+            }
+        }
+        return dp[capacity];
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Unbounded Knapsack
+- Coin Change
+- Coin Change II
+- Rod Cutting
+- Maximum Ribbon Cut

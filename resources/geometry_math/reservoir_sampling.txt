@@ -1,0 +1,85 @@
+KEY: RESERVOIR_SAMPLING
+ALIASES: Random Selection, Uniform Sampling, Streaming Algorithm, k-Sampling
+CATEGORY: Geometry Math
+DIFFICULTY: Medium
+
+WHEN_TO_USE:
+- "Select k random elements from unknown-size stream"
+- "Can't store all elements in memory"
+- "Each element must have equal probability 1/n"
+- Real-time random sampling from data stream
+
+INTUITION:
+Maintain a reservoir of k elements.
+For first k elements, add to reservoir.
+For element i > k: with probability k/i, randomly replace one element in reservoir.
+Proof: each element ends with probability k/n of being selected.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    private int[] reservoir;
+    private int k;
+    private int count;
+    private Random random;
+    
+    public Solution(int k) {
+        this.k = k;
+        this.reservoir = new int[k];
+        this.count = 0;
+        this.random = new Random();
+    }
+    
+    public int pick(int num) {
+        count++;
+        
+        if (count <= k) {
+            reservoir[count - 1] = num;
+        } else {
+            int randomIdx = random.nextInt(count);
+            if (randomIdx < k) {
+                reservoir[randomIdx] = num;
+            }
+        }
+        
+        return count;
+    }
+    
+    public int[] getReservoir() {
+        if (count <= k) {
+            return Arrays.copyOf(reservoir, count);
+        }
+        return reservoir;
+    }
+    
+    // For selecting k elements from array
+    public int[] reservoirSample(int[] stream, int k) {
+        int[] result = new int[k];
+        int count = 0;
+        
+        for (int num : stream) {
+            count++;
+            if (count <= k) {
+                result[count - 1] = num;
+            } else {
+                int randomIdx = random.nextInt(count);
+                if (randomIdx < k) {
+                    result[randomIdx] = num;
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(k)
+
+COMMON_MISTAKES:
+- Using wrong probability formula (should be k/i, not k/n)
+- Not maintaining uniform distribution
+- Random index generation out of bounds
+- Returning incomplete reservoir for small streams
+- Modifying stream while sampling

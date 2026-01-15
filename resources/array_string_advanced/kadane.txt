@@ -1,0 +1,43 @@
+KEY: KADANE_ALGORITHM
+ALIASES: Maximum Subarray, Max Sum Subarray, Optimal Substructure
+CATEGORY: Array String Advanced
+DIFFICULTY: Medium
+
+WHEN_TO_USE:
+- "Find the maximum sum of a contiguous subarray"
+- "Subarray must be non-empty"
+- Problem mentions "consecutive elements"
+- Looking for best continuous solution
+
+INTUITION:
+Imagine you're collecting treasure as you walk through a valley.
+At each treasure, decide: pick it up or start fresh?
+If your running sum becomes negative, starting fresh is better.
+Keep track of the best sum seen so far.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int maxCurrent = nums[0];
+        int maxGlobal = nums[0];
+        
+        for (int i = 1; i < nums.length; i++) {
+            maxCurrent = Math.max(nums[i], maxCurrent + nums[i]);
+            maxGlobal = Math.max(maxGlobal, maxCurrent);
+        }
+        
+        return maxGlobal;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n)
+SPACE_COMPLEXITY: O(1)
+
+COMMON_MISTAKES:
+- Starting with maxCurrent = 0 (fails for all-negative arrays)
+- Forgetting to initialize maxGlobal to nums[0]
+- Not handling empty arrays
+- Not considering single-element subarrays
+- Returning maxCurrent instead of maxGlobal

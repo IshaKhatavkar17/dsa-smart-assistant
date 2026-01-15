@@ -1,0 +1,92 @@
+KEY: SEGMENT_TREE
+ALIASES: Range Query Tree, Segtree, RMQ, Point Update
+CATEGORY: Range Query Data Structure
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Range sum/min/max queries with point updates"
+- "O(log n) per operation required"
+- "Can't use simple array (too slow)"
+- "Interval-based problems"
+
+INTUITION:
+Build a binary tree where each node represents interval sum/min/max.
+Leaf nodes = array elements, internal nodes = aggregated values.
+Queries and updates traverse the tree, combining results in O(log n).
+Tree has n leaf nodes and about 2n total nodes.
+
+JAVA_TEMPLATE:
+```java
+class SegmentTree {
+    private int[] tree;
+    private int n;
+    
+    public SegmentTree(int[] arr) {
+        this.n = arr.length;
+        this.tree = new int[4 * n];
+        build(arr, 0, 0, n - 1);
+    }
+    
+    private void build(int[] arr, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = arr[start];
+        } else {
+            int mid = (start + end) / 2;
+            int leftChild = 2 * node + 1;
+            int rightChild = 2 * node + 2;
+            
+            build(arr, leftChild, start, mid);
+            build(arr, rightChild, mid + 1, end);
+            
+            tree[node] = tree[leftChild] + tree[rightChild];
+        }
+    }
+    
+    public void update(int index, int value) {
+        update(0, 0, n - 1, index, value);
+    }
+    
+    private void update(int node, int start, int end, int index, int value) {
+        if (start == end) {
+            tree[node] = value;
+        } else {
+            int mid = (start + end) / 2;
+            int leftChild = 2 * node + 1;
+            int rightChild = 2 * node + 2;
+            
+            if (index <= mid) {
+                update(leftChild, start, mid, index, value);
+            } else {
+                update(rightChild, mid + 1, end, index, value);
+            }
+            
+            tree[node] = tree[leftChild] + tree[rightChild];
+        }
+    }
+    
+    public int rangeQuery(int l, int r) {
+        return rangeQuery(0, 0, n - 1, l, r);
+    }
+    
+    private int rangeQuery(int node, int start, int end, int l, int r) {
+        if (r < start || end < l) return 0; // no overlap
+        if (l <= start && end <= r) return tree[node]; // complete overlap
+        
+        int mid = (start + end) / 2;
+        int leftSum = rangeQuery(2 * node + 1, start, mid, l, r);
+        int rightSum = rangeQuery(2 * node + 2, mid + 1, end, l, r);
+        
+        return leftSum + rightSum;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(log n) per operation
+SPACE_COMPLEXITY: O(n)
+
+COMMON_MISTAKES:
+- Wrong tree array size (should be 4*n, not 2*n)
+- Off-by-one errors in range checks
+- Not handling overlap conditions correctly
+- Child index calculation errors (2*node+1 vs 2*node)
+- Not combining results from children properly

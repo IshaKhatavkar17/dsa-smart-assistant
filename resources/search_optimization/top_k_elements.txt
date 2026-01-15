@@ -1,0 +1,53 @@
+KEY: TOP_K_ELEMENTS
+CATEGORY: Search & Optimization
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n log k)
+SPACE_COMPLEXITY: O(k)
+
+DESCRIPTION:
+Top K Elements uses Min-Heap to efficiently find K largest/smallest elements
+without sorting the entire array. Optimal for streaming data.
+
+WHEN_TO_USE:
+- K largest/smallest elements
+- Kth smallest/largest element
+- Frequency-based ranking
+- Median finding
+- Top K frequent items
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int num : nums) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+        }
+        
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(
+            (a, b) -> freq.get(a) - freq.get(b)
+        );
+        
+        for (int num : freq.keySet()) {
+            minHeap.offer(num);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        
+        int[] result = new int[k];
+        int i = 0;
+        while (!minHeap.isEmpty()) {
+            result[i++] = minHeap.poll();
+        }
+        return result;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Top K Frequent Elements
+- Kth Largest Element
+- Top K Frequent Words
+- Sort Characters by Frequency
+- Find K Closest Points to Origin

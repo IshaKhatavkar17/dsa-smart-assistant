@@ -1,0 +1,84 @@
+KEY: CONVEX_HULL
+ALIASES: Graham Scan, Jarvis March, Gift Wrapping, Boundary Points
+CATEGORY: Geometry Math
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find the convex polygon containing all points"
+- "Identify boundary points of a point set"
+- Computational geometry problem
+- "Remove interior points"
+
+INTUITION:
+Graham Scan: Sort points by polar angle from lowest point.
+Use cross product to maintain left turn (convex property).
+Maintain a stack of boundary points.
+If new point creates right turn, pop previous point (not on boundary).
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    static class Point {
+        int x, y;
+        Point(int x, int y) { this.x = x; this.y = y; }
+    }
+    
+    public List<Point> convexHull(Point[] points) {
+        if (points.length < 3) return Arrays.asList(points);
+        
+        // Find bottom-most point (or left-most if tie)
+        Point start = points[0];
+        for (Point p : points) {
+            if (p.y < start.y || (p.y == start.y && p.x < start.x)) {
+                start = p;
+            }
+        }
+        
+        // Sort by polar angle with respect to start
+        final Point pivot = start;
+        Arrays.sort(points, (p1, p2) -> {
+            int cross = crossProduct(pivot, p1, p2);
+            if (cross == 0) {
+                return distance(pivot, p1) - distance(pivot, p2);
+            }
+            return cross;
+        });
+        
+        Stack<Point> hull = new Stack<>();
+        hull.push(points[0]);
+        hull.push(points[1]);
+        
+        for (int i = 2; i < points.length; i++) {
+            while (hull.size() > 1) {
+                Point second = hull.pop();
+                Point first = hull.peek();
+                if (crossProduct(first, second, points[i]) > 0) {
+                    hull.push(second);
+                    break;
+                }
+            }
+            hull.push(points[i]);
+        }
+        
+        return new ArrayList<>(hull);
+    }
+    
+    private int crossProduct(Point o, Point a, Point b) {
+        return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+    }
+    
+    private int distance(Point a, Point b) {
+        return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n log n)
+SPACE_COMPLEXITY: O(h) where h is hull size
+
+COMMON_MISTAKES:
+- Wrong cross product formula
+- Not finding starting point correctly
+- Sorting error with polar angles
+- Forgetting to maintain left-turn property
+- Not handling collinear points properly

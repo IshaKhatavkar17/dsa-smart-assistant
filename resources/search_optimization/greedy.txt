@@ -1,0 +1,45 @@
+KEY: GREEDY
+CATEGORY: Search & Optimization
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n log n) usually
+SPACE_COMPLEXITY: O(1)
+
+DESCRIPTION:
+Greedy approach makes locally optimal choices at each step, hoping to find
+global optimum. Works when problem exhibits greedy-choice property.
+
+WHEN_TO_USE:
+- Activity selection
+- Huffman coding
+- Interval scheduling
+- Coin change (optimal substructure)
+- Jump game variants
+- Gas station problems
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int jumpGame(int[] nums) {
+        int maxReach = 0;
+        int steps = 0;
+        int currEnd = 0;
+        
+        for (int i = 0; i < nums.length - 1; i++) {
+            maxReach = Math.max(maxReach, i + nums[i]);
+            
+            if (i == currEnd) {
+                steps++;
+                currEnd = maxReach;
+            }
+        }
+        return steps;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Jump Game I & II
+- Gas Station
+- Candy Distribution
+- Interval Scheduling Maximization
+- Activity Selection

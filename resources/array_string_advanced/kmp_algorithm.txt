@@ -1,0 +1,72 @@
+KEY: KMP_ALGORITHM
+ALIASES: Knuth-Morris-Pratt, Pattern Matching, Failure Function
+CATEGORY: Array String Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find all occurrences of pattern in text"
+- "String matching in O(n + m) time"
+- Naive approach times out (repeating patterns)
+- "Pattern overlaps with itself"
+
+INTUITION:
+Build a "failure function" that tells us:
+"If we mismatch at position i, where should we continue matching?"
+This avoids rescanning characters we already matched.
+For pattern "ABABC", mismatch at position 4 tells us to try from position 2.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public List<Integer> findPattern(String text, String pattern) {
+        List<Integer> result = new ArrayList<>();
+        if (pattern.length() == 0) return result;
+        
+        int[] lps = buildLPS(pattern);
+        int j = 0;
+        
+        for (int i = 0; i < text.length(); i++) {
+            while (j > 0 && text.charAt(i) != pattern.charAt(j)) {
+                j = lps[j - 1];
+            }
+            if (text.charAt(i) == pattern.charAt(j)) {
+                j++;
+            }
+            if (j == pattern.length()) {
+                result.add(i - j + 1);
+                j = lps[j - 1];
+            }
+        }
+        return result;
+    }
+    
+    private int[] buildLPS(String pattern) {
+        int n = pattern.length();
+        int[] lps = new int[n];
+        int len = 0, i = 1;
+        
+        while (i < n) {
+            if (pattern.charAt(i) == pattern.charAt(len)) {
+                lps[i++] = ++len;
+            } else {
+                if (len > 0) {
+                    len = lps[len - 1];
+                } else {
+                    lps[i++] = 0;
+                }
+            }
+        }
+        return lps;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n + m)
+SPACE_COMPLEXITY: O(m)
+
+COMMON_MISTAKES:
+- Building LPS incorrectly
+- Not resetting j using LPS after mismatch
+- Off-by-one errors in LPS array
+- Confusing i and j in buildLPS
+- Not handling pattern longer than text

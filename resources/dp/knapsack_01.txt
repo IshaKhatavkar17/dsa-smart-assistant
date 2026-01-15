@@ -1,0 +1,47 @@
+KEY: KNAPSACK_01
+CATEGORY: Dynamic Programming
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n*w)
+SPACE_COMPLEXITY: O(n*w)
+
+DESCRIPTION:
+0/1 Knapsack solves optimization problems where each item can be included or excluded.
+Cannot take partial items or multiple instances of the same item.
+
+WHEN_TO_USE:
+- Item selection with weight constraints
+- Budget allocation problems
+- Resource optimization
+- Target sum with constraints
+- Partition problems
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int knapsack(int[] weights, int[] values, int capacity) {
+        int n = weights.length;
+        int[][] dp = new int[n + 1][capacity + 1];
+        
+        for (int i = 1; i <= n; i++) {
+            for (int w = 1; w <= capacity; w++) {
+                if (weights[i - 1] <= w) {
+                    dp[i][w] = Math.max(
+                        values[i - 1] + dp[i - 1][w - weights[i - 1]],
+                        dp[i - 1][w]
+                    );
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+        return dp[n][capacity];
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- 0/1 Knapsack
+- Partition Equal Subset Sum
+- Minimum Subset Sum Difference
+- Target Sum
+- Number of Subsets with Given Difference

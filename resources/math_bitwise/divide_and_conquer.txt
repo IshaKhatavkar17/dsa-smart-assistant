@@ -1,0 +1,52 @@
+KEY: DIVIDE_AND_CONQUER
+CATEGORY: Math & Bitwise
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n log n) usually
+SPACE_COMPLEXITY: O(log n) recursion
+
+DESCRIPTION:
+Divide and Conquer breaks problem into smaller subproblems, solves them recursively,
+and combines solutions. Foundation for merge sort, quick sort, binary search.
+
+WHEN_TO_USE:
+- Sorting (merge sort, quick sort)
+- Search in rotated arrays
+- Closest pair of points
+- Matrix multiplication
+- Strassen's algorithm
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int[] mergeSort(int[] arr) {
+        if (arr.length <= 1) return arr;
+        
+        int mid = arr.length / 2;
+        int[] left = mergeSort(Arrays.copyOfRange(arr, 0, mid));
+        int[] right = mergeSort(Arrays.copyOfRange(arr, mid, arr.length));
+        
+        return merge(left, right);
+    }
+    
+    private static int[] merge(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        int i = 0, j = 0, k = 0;
+        
+        while (i < left.length && j < right.length) {
+            result[k++] = left[i] <= right[j] ? left[i++] : right[j++];
+        }
+        
+        while (i < left.length) result[k++] = left[i++];
+        while (j < right.length) result[k++] = right[j++];
+        
+        return result;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Merge Sort
+- Quick Sort
+- Closest Pair of Points
+- Maximum Subarray
+- Majority Element

@@ -1,0 +1,44 @@
+KEY: LCS
+CATEGORY: Dynamic Programming
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(m*n)
+SPACE_COMPLEXITY: O(m*n)
+
+DESCRIPTION:
+Longest Common Subsequence finds the longest sequence of elements common to both strings
+without requiring them to be consecutive. Foundation for many string problems.
+
+WHEN_TO_USE:
+- String comparison / similarity
+- Edit distance calculations
+- Diff algorithms
+- Common pattern finding
+- Merge operations
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public static int lcs(String s1, String s2) {
+        int m = s1.length(), n = s2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Longest Common Subsequence
+- Edit Distance
+- Delete Operation for Two Strings
+- Minimum ASCII Delete Sum for Two Strings
+- Distinct Subsequences

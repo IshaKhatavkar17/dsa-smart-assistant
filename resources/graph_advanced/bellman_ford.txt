@@ -1,0 +1,68 @@
+KEY: BELLMAN_FORD_ALGORITHM
+ALIASES: Shortest Path Negative, Negative Cycle Detection, SPFA
+CATEGORY: Graph Advanced
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Find shortest paths with negative edge weights"
+- "Detect negative cycles"
+- "V-1 relaxations required"
+- Graph might have negative edges
+
+INTUITION:
+Relax every edge V-1 times. Each relaxation makes shortest paths 1 step closer.
+After V-1 iterations, all shortest paths are found.
+If any distance decreases in iteration V, a negative cycle exists.
+Slower than Dijkstra but handles negative weights.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    static class Edge {
+        int u, v, weight;
+        Edge(int u, int v, int weight) {
+            this.u = u;
+            this.v = v;
+            this.weight = weight;
+        }
+    }
+    
+    public int[] bellmanFord(int n, Edge[] edges, int source) {
+        int[] dist = new int[n];
+        for (int i = 0; i < n; i++) {
+            dist[i] = Integer.MAX_VALUE;
+        }
+        dist[source] = 0;
+        
+        // Relax edges V-1 times
+        for (int i = 0; i < n - 1; i++) {
+            for (Edge edge : edges) {
+                if (dist[edge.u] != Integer.MAX_VALUE && 
+                    dist[edge.u] + edge.weight < dist[edge.v]) {
+                    dist[edge.v] = dist[edge.u] + edge.weight;
+                }
+            }
+        }
+        
+        // Check for negative cycles
+        for (Edge edge : edges) {
+            if (dist[edge.u] != Integer.MAX_VALUE && 
+                dist[edge.u] + edge.weight < dist[edge.v]) {
+                return null; // Negative cycle detected
+            }
+        }
+        
+        return dist;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(VE)
+SPACE_COMPLEXITY: O(V)
+
+COMMON_MISTAKES:
+- Forgetting to initialize distances to infinity
+- Only relaxing V-2 times instead of V-1
+- Not checking negative cycle properly
+- Not skipping Integer.MAX_VALUE in relaxation
+- Confusing directed/undirected edge handling

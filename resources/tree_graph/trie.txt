@@ -1,0 +1,57 @@
+KEY: TRIE
+CATEGORY: Tree and Graph
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(m) for insert/search (m = word length)
+SPACE_COMPLEXITY: O(ALPHABET_SIZE * N)
+
+DESCRIPTION:
+Trie (Prefix Tree) is a tree structure for efficient string storage and retrieval.
+Enables prefix-based searches, autocomplete, and spell checking.
+
+WHEN_TO_USE:
+- Autocomplete systems
+- Spell checkers
+- Word search
+- IP routing
+- Longest common prefix
+
+JAVA_TEMPLATE:
+```java
+class TrieNode {
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isEnd = false;
+}
+
+class Trie {
+    TrieNode root = new TrieNode();
+    
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node = node.children.computeIfAbsent(c, k -> new TrieNode());
+        }
+        node.isEnd = true;
+    }
+    
+    public boolean search(String word) {
+        TrieNode node = find(word);
+        return node != null && node.isEnd;
+    }
+    
+    private TrieNode find(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node = node.children.get(c);
+            if (node == null) return null;
+        }
+        return node;
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Implement Trie
+- Word Search II
+- Autocomplete System
+- Longest Word in Dictionary
+- Replace Words

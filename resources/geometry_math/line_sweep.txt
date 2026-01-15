@@ -1,0 +1,96 @@
+KEY: LINE_SWEEP_ALGORITHM
+ALIASES: Sweep Line, Event Processing, Segment Tree Queries
+CATEGORY: Geometry Math
+DIFFICULTY: Hard
+
+WHEN_TO_USE:
+- "Merge overlapping intervals efficiently"
+- "Count rectangle intersections"
+- "Skyline problem or similar"
+- Geometry problems with sorted events
+
+INTUITION:
+Imagine a vertical line sweeping left to right across the plane.
+Process events in sorted order (segment starts/ends).
+Track active segments at each event.
+Combine information as line sweeps to answer queries.
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    static class Event implements Comparable<Event> {
+        int x, type; // type: 0=start, 1=end
+        int y1, y2;
+        
+        public int compareTo(Event other) {
+            if (this.x != other.x) return this.x - other.x;
+            return this.type - other.type;
+        }
+    }
+    
+    public int computeArea(int[][] rectangles) {
+        List<Event> events = new ArrayList<>();
+        
+        for (int[] rect : rectangles) {
+            events.add(new Event(rect[0], 0, rect[1], rect[3])); // left edge
+            events.add(new Event(rect[2], 1, rect[1], rect[3])); // right edge
+        }
+        
+        Collections.sort(events);
+        
+        long area = 0;
+        TreeMap<Integer, Integer> activeSegments = new TreeMap<>();
+        
+        for (int i = 0; i < events.size(); i++) {
+            Event curr = events.get(i);
+            
+            // Calculate height covered before moving to next x
+            if (i + 1 < events.size() && curr.x < events.get(i + 1).x) {
+                long width = events.get(i + 1).x - curr.x;
+                long height = getHeight(activeSegments);
+                area += width * height;
+            }
+            
+            // Update active segments
+            if (curr.type == 0) { // segment starts
+                activeSegments.put(curr.y1, activeSegments.getOrDefault(curr.y1, 0) + 1);
+                activeSegments.put(curr.y2, activeSegments.getOrDefault(curr.y2, 0) + 1);
+            } else { // segment ends
+                activeSegments.put(curr.y1, activeSegments.get(curr.y1) - 1);
+                if (activeSegments.get(curr.y1) == 0) {
+                    activeSegments.remove(curr.y1);
+                }
+                activeSegments.put(curr.y2, activeSegments.get(curr.y2) - 1);
+                if (activeSegments.get(curr.y2) == 0) {
+                    activeSegments.remove(curr.y2);
+                }
+            }
+        }
+        
+        return (int) area;
+    }
+    
+    private long getHeight(TreeMap<Integer, Integer> segments) {
+        int height = 0;
+        boolean inSegment = false;
+        for (int y : segments.keySet()) {
+            if (!inSegment) inSegment = true;
+            else {
+                height += y;
+                inSegment = false;
+            }
+        }
+        return height;
+    }
+}
+```
+
+TIME_COMPLEXITY: O(n log n)
+SPACE_COMPLEXITY: O(n)
+
+COMMON_MISTAKES:
+- Wrong event ordering
+- Not tracking count of overlapping segments
+- Height calculation with odd number of points
+- Integer overflow with area calculation
+- Not handling degenerate cases

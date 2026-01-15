@@ -1,0 +1,19 @@
+# Compiled Java files
+*.class
+out/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local documentation (for developer reference only)
+docs/
+
+# Build artifacts
+*.jar
+*.war

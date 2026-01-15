@@ -1,0 +1,52 @@
+KEY: K_WAY_MERGE
+CATEGORY: Search & Optimization
+DIFFICULTY: Medium
+TIME_COMPLEXITY: O(n log k)
+SPACE_COMPLEXITY: O(k)
+
+DESCRIPTION:
+K-Way Merge efficiently combines multiple sorted arrays/lists using a min-heap
+to track the smallest element across all lists.
+
+WHEN_TO_USE:
+- Merge sorted arrays
+- Merge sorted lists
+- Find smallest element across streams
+- Merge K sorted streams
+- Kth smallest across multiple sources
+
+JAVA_TEMPLATE:
+```java
+class Solution {
+    public int[] mergeKArrays(int[][] arrays) {
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            (a, b) -> Integer.compare(a[0], b[0])
+        );
+        
+        for (int i = 0; i < arrays.length; i++) {
+            minHeap.offer(new int[]{arrays[i][0], i, 0});
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        while (!minHeap.isEmpty()) {
+            int[] curr = minHeap.poll();
+            int val = curr[0], arrIdx = curr[1], idx = curr[2];
+            result.add(val);
+            
+            if (idx + 1 < arrays[arrIdx].length) {
+                minHeap.offer(new int[]{
+                    arrays[arrIdx][idx + 1], arrIdx, idx + 1
+                });
+            }
+        }
+        
+        return result.stream().mapToInt(i -> i).toArray();
+    }
+}
+```
+
+EXAMPLE_PROBLEMS:
+- Merge K Sorted Lists
+- Merge K Sorted Arrays
+- Smallest Range Covering Elements from K Lists
+- Find K Pairs with Smallest Sums
