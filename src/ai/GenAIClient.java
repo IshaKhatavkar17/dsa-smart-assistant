@@ -41,10 +41,11 @@ public class GenAIClient {
       String requestBody = "{"
           + "\"model\":\"llama-3.1-8b-instant\","
           + "\"messages\":["
-          + " {\"role\":\"system\",\"content\":\"You are a senior Java DSA engineer. Generate ONLY clean, complete Java code.\"},"
+          + " {\"role\":\"system\",\"content\":\"You are a senior Java DSA engineer. Generate ONLY clean, complete Java code. Be thorough and complete all sections.\"},"
           + " {\"role\":\"user\",\"content\":\"" + escapedPrompt + "\"}"
           + "],"
-          + "\"temperature\":0.2"
+          + "\"temperature\":0.2,"
+          + "\"max_tokens\":2048"
           + "}";
 
       HttpRequest request = HttpRequest.newBuilder()

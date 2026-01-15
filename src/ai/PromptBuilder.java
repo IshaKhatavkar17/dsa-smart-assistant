@@ -31,50 +31,32 @@ public class PromptBuilder {
 
     /**
      * Build prompt from offline pattern.
-     * Instructs AI to provide COMPLETE solution with variations and edge cases.
-     * Optimized for beginner-friendly explanations without redundancy.
+     * Instructs AI to provide COMPLETE solution with clear formatting.
+     * Optimized for beginner-friendly explanations and complete responses.
      */
     public static String buildPatternAugmentationPrompt(String userInput, DSAPattern pattern) {
         return """
-                PROBLEM:
+                PROBLEM: %s
+                PATTERN: %s (%s)
+                BASE TEMPLATE:
                 %s
                 
-                APPLICABLE DSA PATTERN:
-                Pattern Name: %s
-                Category: %s
-                Difficulty Level: %s
+                GENERATE EXACTLY THIS FORMAT (complete and thorough):
                 
-                BASE TEMPLATE (Already in offline mode):
-                %s
+                === COMPLETE SOLUTION ===
+                Provide a full, working Java solution using this pattern with comments. Handle all edge cases.
                 
-                TASK - Generate a COMPLETE, BEGINNER-FRIENDLY Java solution:
+                === WALKTHROUGH (BEGINNER-FRIENDLY) ===
+                Step-by-step explanation of how the algorithm works. Use concrete examples.
                 
-                1. COMPLETE CODE:
-                   - Write a full, working Java solution using this pattern
-                   - Include all edge cases handling
-                   - Add real problem-solving logic (not just template)
-                   - Use meaningful variable names
-                   - Make it copy-paste ready
+                === KEY INSIGHTS ===
+                Why this pattern is effective. When and where to use it. Common pitfalls.
                 
-                2. STEP-BY-STEP WALKTHROUGH:
-                   - Explain the algorithm in simple terms (for beginners)
-                   - Break down each key step
-                   - Show how the pattern applies to THIS specific problem
-                   - Use real example values to trace execution
+                === FOLLOW-UP VARIANTS ===
+                Show 1-2 similar problems or variations you can solve with this pattern.
                 
-                3. VARIATIONS & OPTIMIZATIONS:
-                   - Show 1-2 alternative approaches
-                   - Compare time/space trade-offs
-                   - When to use each variation
-                
-                4. COMMON MISTAKES & TIPS:
-                   - Pitfalls specific to beginners
-                   - Debugging tips
-                   - Interview follow-up questions
-                
-                Format the response clearly with sections: SOLUTION | WALKTHROUGH | ALTERNATIVES | TIPS
-                Focus on clarity and completeness. Assume reader is a beginner learning DSA.
+                Make your response COMPLETE and detailed in each section. No truncation.
                 """.formatted(userInput, pattern.getKey(), pattern.getCategory(), 
-                             pattern.getDifficulty(), pattern.getJavaTemplate());
+                             pattern.getJavaTemplate());
     }
 }
