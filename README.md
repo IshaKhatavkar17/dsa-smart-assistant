@@ -223,4 +223,4 @@ If this tool helps with your DSA journey:
 
 ---
 
-**Made with ❤️ for developers who are serious about DSA**
+**Made with ❤️ for developers who are serious about DSA - Isha Khatavkar**
