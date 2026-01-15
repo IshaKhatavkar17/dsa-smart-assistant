@@ -11,40 +11,70 @@ public class PromptBuilder {
 
     public static String buildPrompt(String userInput, List<String> hints) {
         return """
-                Problem:
+                PROBLEM STATEMENT:
                 %s
-
-                Suggested DSA approaches:
+                
+                SUGGESTED DSA APPROACHES:
                 %s
-
-                Generate optimized Java code using these hints.
+                
+                GENERATE A COMPLETE SOLUTION:
+                1. Write full, working Java code that solves the problem
+                2. Choose the best approach from suggestions
+                3. Include meaningful variable names and clear logic
+                4. Add brief inline comments for key steps
+                5. Handle edge cases
+                6. Make it production-ready and copy-paste ready
+                
+                Format: Provide only the complete Java solution code. No explanations, just the code.
                 """.formatted(userInput, hints);
     }
 
     /**
      * Build prompt from offline pattern.
-     * Instructs AI to refine/extend the offline template.
+     * Instructs AI to provide COMPLETE solution with variations and edge cases.
+     * Optimized for beginner-friendly explanations without redundancy.
      */
     public static String buildPatternAugmentationPrompt(String userInput, DSAPattern pattern) {
         return """
-                User Problem: %s
-                
-                I have already found an offline DSA pattern template for this:
-                
-                Pattern: %s
-                Category: %s
-                Difficulty: %s
-                When to use: %s
-                Template:
+                PROBLEM:
                 %s
                 
-                Now generate an extended, optimized Java solution that:
-                1. Uses the above pattern as foundation
-                2. Adds more specific implementation details for the problem
-                3. Includes clear comments explaining the approach
-                4. Is production-ready and interview-ready
+                APPLICABLE DSA PATTERN:
+                Pattern Name: %s
+                Category: %s
+                Difficulty Level: %s
+                
+                BASE TEMPLATE (Already in offline mode):
+                %s
+                
+                TASK - Generate a COMPLETE, BEGINNER-FRIENDLY Java solution:
+                
+                1. COMPLETE CODE:
+                   - Write a full, working Java solution using this pattern
+                   - Include all edge cases handling
+                   - Add real problem-solving logic (not just template)
+                   - Use meaningful variable names
+                   - Make it copy-paste ready
+                
+                2. STEP-BY-STEP WALKTHROUGH:
+                   - Explain the algorithm in simple terms (for beginners)
+                   - Break down each key step
+                   - Show how the pattern applies to THIS specific problem
+                   - Use real example values to trace execution
+                
+                3. VARIATIONS & OPTIMIZATIONS:
+                   - Show 1-2 alternative approaches
+                   - Compare time/space trade-offs
+                   - When to use each variation
+                
+                4. COMMON MISTAKES & TIPS:
+                   - Pitfalls specific to beginners
+                   - Debugging tips
+                   - Interview follow-up questions
+                
+                Format the response clearly with sections: SOLUTION | WALKTHROUGH | ALTERNATIVES | TIPS
+                Focus on clarity and completeness. Assume reader is a beginner learning DSA.
                 """.formatted(userInput, pattern.getKey(), pattern.getCategory(), 
-                             pattern.getDifficulty(), pattern.getWhenToUse(), 
-                             pattern.getJavaTemplate());
+                             pattern.getDifficulty(), pattern.getJavaTemplate());
     }
 }
